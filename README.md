@@ -10,6 +10,7 @@ This is a project in early development. Starting with basic logic modules to lea
 - AND gate + testbench
 - OR gate + testbench
 - 2-to-1 MUX + testbench
+- Full Adder + testbench
 
 ## Repo structure
 
