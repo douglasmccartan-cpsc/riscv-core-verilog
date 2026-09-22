@@ -11,6 +11,7 @@ This is a project in early development. Starting with basic logic modules to lea
 - OR gate + testbench
 - 2-to-1 MUX + testbench
 - Full Adder + testbench
+- 4-bit Ripple Adder + testbench
 
 ## Repo structure
 
@@ -27,4 +28,8 @@ From inside a modules folder:
 
 ## Next steps
 
-Continuing to build up modules in Verilog with testbenches, adder, register, ALU.
+Continuing to build up modules in Verilog with testbenches, register, ALU.
+
+## Future improvements
+
+- build a half adder and replace the first full adder in the ripple adder as a small optimisation.
