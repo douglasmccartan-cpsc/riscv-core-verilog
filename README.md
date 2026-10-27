@@ -1,24 +1,30 @@
 # riscv-core-verilog
-Building toward a RISC-V CPU core in verilog.
+A RISC-V CPU core built from the ground up in Verilog, starting from logic gates.
+
+**Status:** In progress. Building and verifying one mode at a time.
 
 ## About
 
-This is a project in early development. Starting with basic logic modules to learn Verilog, the simulation toolchain (Icarus Verilog + GTKWave) and bash. This is being built toward the goal of a working RISC-V core.
+I'm building this to better understand how a CPU works at the hardware level.
 
 ## Progress
 
-- AND gate + testbench
-- OR gate + testbench
-- 2-to-1 MUX + testbench
-- Full Adder + testbench
-- 4-bit Ripple Adder + testbench
-- 4-bit b selector + testbench
-- 4-bit add/sub unit + testbench
+- [x] AND gate + testbench
+- [x] OR gate + testbench
+- [x] 2-to-1 MUX + testbench
+- [x] Full Adder + testbench
+- [x] 4-bit Ripple Adder + testbench
+- [x] 4-bit B selector + testbench
+- [x] 4-bit add/sub unit + testbench
+- [x] Parameterised N-bit register with enable and synchronous reset + testbench
+- [ ] Counter
+- [ ] ALU
 
 ## Repo structure
 
-sim/basics/ - foundational logic modules built while learning Verilog and the toolchain
-sim/alu/ - build of components with an ALU as an end goal
+- `sim/basics/`: foundational logic modules built while learning Verilog and the toolchain
+- `sim/alu/`: building components towards an ALU
+- `sim/sequential/`: clocked modules (register, counter)
 
 ## How to run a simulation
 
@@ -28,21 +34,24 @@ From inside a modules folder:
   vvp <name>_test
   gtkwave waveform.vcd
 ```
-Note: some units require adding in other modules. In this case add all modules needed as:
-```
-<name>.v
-```
 
-## Next steps
-
-Continuing to build up modules in Verilog with testbenches, register, ALU.
+Some modules instantiate others. In that case list every file needed, for example:
+```
+iverilog -o addsub_test addsub.v ripple_adder.v full_adder.v addsub_tb.v
+```
 
 ## Design notes
 
-- The subtraction component uses two's compliment (invert B, add 1) reusing the ripple adder used for addition.
+- The subtraction component uses two's complement (invert B, add 1) reusing the ripple adder used for addition.
 
-- The 4-bit add/ sub unit currently has a cout signal of 0 when A < B and a subtraction has occurred, this indicates a borrow. The circuit will need extra logic in the future for signed numbers but for unsigned numbers the borrow works fine.
+- In the 4-bit add/sub unit, `cout` is 0 when A < B and a subtraction has occurred. This indicates a borrow, which works for unsigned numbers. Signed numbers will need extra logic.
+  
+- The register resets synchronously, so reset is only checked on the clock edge, and reset takes priority over enable.
+
+## Next steps
+
+Counter, then the ALU and register file, working towards a simple RISC-V datapath.
 
 ## Future improvements
 
-- Build a half adder and replace the first full adder in the ripple adder as a small optimisation.
+- Replace the first full adder in the ripple adder with a half adder as a small optimisation.
